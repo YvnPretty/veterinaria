@@ -25,7 +25,7 @@ class UsuarioController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:4',
-            'rol' => 'required|in:administrador,veterinario',
+            'rol' => 'required|in:administrador,veterinario,usuario',
         ]);
 
         User::create([
@@ -48,7 +48,7 @@ class UsuarioController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $usuario->id,
-            'rol' => 'required|in:administrador,veterinario',
+            'rol' => 'required|in:administrador,veterinario,usuario',
         ]);
 
         $data = [

@@ -72,6 +72,7 @@
                     <option value="" disabled selected>Seleccione un rol...</option>
                     <option value="administrador" {{ old('rol') == 'administrador' ? 'selected' : '' }}>Administrador</option>
                     <option value="veterinario" {{ old('rol') == 'veterinario' ? 'selected' : '' }}>Veterinario</option>
+                    <option value="usuario" {{ old('rol') == 'usuario' ? 'selected' : '' }}>Usuario</option>
                 </select>
                 @error('rol')
                     <div class="invalid-feedback">{{ $message }}</div>
