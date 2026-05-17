@@ -19,15 +19,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        body { background-color: #f8f9fc; }
-        .sidebar-light .nav-item .nav-link { color: #858796; padding: 1rem; border-radius: 12px; margin: 0 10px; width: auto; font-weight: 600; }
-        .sidebar-light .nav-item.active .nav-link { background-color: #f2eefd; color: #512da8; }
-        .sidebar-light .nav-item .nav-link i { font-size: 1.1rem; margin-right: 10px; }
-        .sidebar-light .nav-item.active .nav-link i { color: #512da8; }
-        .sidebar-brand { color: #1f2d3d !important; text-transform: none; font-weight: 700; letter-spacing: 0; }
-        .sidebar-brand-icon { color: #512da8; font-size: 1.5rem; }
-        .vetcare-card { border: none; border-radius: 16px; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1); }
-        .vetcare-card-header { background-color: transparent; border-bottom: none; padding-top: 1.5rem; padding-bottom: 0; }
+        body { background-color: #f4f6f9; color: #334155; }
+        #wrapper #content-wrapper { background-color: #f4f6f9; }
+        .container-fluid { padding: 1.5rem 1.5rem 3rem 1.5rem; }
+        @media (min-width: 768px) {
+            .container-fluid { padding: 2rem 2.5rem 4rem 2.5rem; }
+        }
+        
+        /* Sidebar Styling */
+        .sidebar-light .nav-item .nav-link { 
+            color: #64748b; 
+            padding: 0.85rem 1.25rem; 
+            border-radius: 12px; 
+            margin: 0.25rem 15px; 
+            width: auto; 
+            font-weight: 700; 
+            transition: all 0.2s ease;
+        }
+        .sidebar-light .nav-item.active .nav-link { 
+            background-color: #7b61ff; 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 12px rgba(123, 97, 255, 0.25);
+        }
+        .sidebar-light .nav-item.active .nav-link i { color: #ffffff !important; }
+        .sidebar-light .nav-item .nav-link:hover:not(.active) { 
+            background-color: #f1f5f9; 
+            color: #512da8; 
+            transform: translateX(3px);
+        }
+        .sidebar-light .nav-item .nav-link i { font-size: 1rem; margin-right: 12px; transition: all 0.2s; }
+        
+        .sidebar-brand { height: auto; padding: 1.5rem 1rem; margin-bottom: 1rem; }
+        .sidebar-heading { 
+            padding: 0.75rem 1.5rem 0.5rem; 
+            text-transform: uppercase; 
+            font-size: 0.7rem; 
+            letter-spacing: 0.1em; 
+            font-weight: 800; 
+            color: #94a3b8; 
+        }
+
+        /* Topbar Styling */
+        .topbar { height: 4.5rem; border-bottom: 1px solid #e2e8f0 !important; }
+        .topbar .nav-item .nav-link { height: 4.5rem; }
+
+        /* Card & UI Defaults */
+        .vetcare-card { border: none; border-radius: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); }
+        .btn { border-radius: 12px; font-weight: 700; padding: 0.6rem 1.25rem; transition: all 0.2s ease; }
+        .btn:active { transform: scale(0.98); }
     </style>
 </head>
 <body id="page-top">
