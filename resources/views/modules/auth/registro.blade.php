@@ -46,6 +46,7 @@
                                     <div class="form-group">
                                         <select class="form-control rounded-pill" style="height: 3.2rem; padding: 0.5rem 1.5rem;" name="rol" id="rol">
                                             <option value="" disabled selected>Selecciona un rol...</option>
+                                            <option value="usuario">Usuario</option>
                                             <option value="veterinario">Veterinario</option>
                                             <option value="administrador">Administrador</option>
                                         </select>
