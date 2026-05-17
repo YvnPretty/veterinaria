@@ -58,6 +58,11 @@ class AuthController extends Controller
         if (Auth::user()->rol === 'administrador') {
             return view('modules/dashboard/admin');
         }
+        
+        if (Auth::user()->rol === 'usuario') {
+            return view('modules/dashboard/usuario');
+        }
+        
         return view('modules/dashboard/home');
     }
 }

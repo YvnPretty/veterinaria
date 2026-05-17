@@ -61,40 +61,59 @@
                 Gestión
             </div>
 
-            @if(Auth::check() && Auth::user()->rol === 'administrador')
-                <!-- Administrador Menu -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('usuarios.index') }}">
-                        <i class="fas fa-fw fa-users"></i>
-                        <span>Usuarios</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Reportes Financieros</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-cogs"></i>
-                        <span>Configuración del Sistema</span></a>
-                </li>
-            @else
-                <!-- Veterinario Menu -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-paw"></i>
-                        <span>Pacientes Mascotas</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-calendar-alt"></i>
-                        <span>Agenda de Citas</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-notes-medical"></i>
-                        <span>Tratamientos</span></a>
-                </li>
+            @if(Auth::check())
+                @if(Auth::user()->rol === 'administrador')
+                    <!-- Administrador Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('usuarios.index') }}">
+                            <i class="fas fa-fw fa-users"></i>
+                            <span>Usuarios</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-chart-area"></i>
+                            <span>Reportes Financieros</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-cogs"></i>
+                            <span>Configuración del Sistema</span></a>
+                    </li>
+                @elseif(Auth::user()->rol === 'usuario')
+                    <!-- Usuario/Cliente Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-paw"></i>
+                            <span>Mis Mascotas</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-calendar-alt"></i>
+                            <span>Mis Citas</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-file-medical"></i>
+                            <span>Historial Médico</span></a>
+                    </li>
+                @else
+                    <!-- Veterinario Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-paw"></i>
+                            <span>Pacientes Mascotas</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-calendar-alt"></i>
+                            <span>Agenda de Citas</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-fw fa-notes-medical"></i>
+                            <span>Tratamientos</span></a>
+                    </li>
+                @endif
             @endif
 
             <!-- Divider -->
