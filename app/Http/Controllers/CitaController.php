@@ -2,63 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cita;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $citas = Cita::with('paciente')->orderBy('fecha_hora', 'asc')->get();
+        return view('modules.citas.index', compact('citas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $pacientes = Paciente::all();
+        return view('modules.citas.create', compact('pacientes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'fecha_hora' => 'required|date',
+            'motivo' => 'required|string|max:255',
+            'estado' => 'required|in:pendiente,en_proceso,completada,cancelada',
+            'notas' => 'nullable|string',
+        ]);
+
+        Cita::create($request->all());
+
+        return redirect()->route('citas.index')->with('success', 'Cita agendada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Cita $cita)
     {
-        //
+        $pacientes = Paciente::all();
+        return view('modules.citas.edit', compact('cita', 'pacientes'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Cita $cita)
     {
-        //
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'fecha_hora' => 'required|date',
+            'motivo' => 'required|string|max:255',
+            'estado' => 'required|in:pendiente,en_proceso,completada,cancelada',
+            'notas' => 'nullable|string',
+        ]);
+
+        $cita->update($request->all());
+
+        return redirect()->route('citas.index')->with('success', 'Cita actualizada exitosamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Cita $cita)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $cita->delete();
+        return redirect()->route('citas.index')->with('success', 'Cita eliminada exitosamente.');
     }
 }

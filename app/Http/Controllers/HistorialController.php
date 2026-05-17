@@ -2,63 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialMedico;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HistorialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $historiales = HistorialMedico::with(['paciente', 'veterinario'])->orderBy('fecha', 'desc')->get();
+        return view('modules.historial.index', compact('historiales'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $pacientes = Paciente::all();
+        return view('modules.historial.create', compact('pacientes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'fecha' => 'required|date',
+            'diagnostico' => 'required|string',
+            'tratamiento' => 'required|string',
+            'medicamentos' => 'nullable|string',
+        ]);
+
+        HistorialMedico::create([
+            'paciente_id' => $request->paciente_id,
+            'veterinario_id' => Auth::id(),
+            'fecha' => $request->fecha,
+            'diagnostico' => $request->diagnostico,
+            'tratamiento' => $request->tratamiento,
+            'medicamentos' => $request->medicamentos,
+        ]);
+
+        return redirect()->route('historial.index')->with('success', 'Registro médico agregado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(HistorialMedico $historial)
     {
-        //
+        $pacientes = Paciente::all();
+        return view('modules.historial.edit', compact('historial', 'pacientes'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, HistorialMedico $historial)
     {
-        //
+        $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
+            'fecha' => 'required|date',
+            'diagnostico' => 'required|string',
+            'tratamiento' => 'required|string',
+            'medicamentos' => 'nullable|string',
+        ]);
+
+        $historial->update($request->all());
+
+        return redirect()->route('historial.index')->with('success', 'Registro médico actualizado exitosamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(HistorialMedico $historial)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $historial->delete();
+        return redirect()->route('historial.index')->with('success', 'Registro médico eliminado exitosamente.');
     }
 }
