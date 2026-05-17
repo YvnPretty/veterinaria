@@ -114,19 +114,19 @@
                 @else
                     <!-- Veterinario Menu -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('pacientes.index') }}">
                             <i class="fas fa-fw fa-paw"></i>
                             <span>Pacientes Mascotas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('citas.index') }}">
                             <i class="fas fa-fw fa-calendar-alt"></i>
                             <span>Agenda de Citas</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('historial.index') }}">
                             <i class="fas fa-fw fa-notes-medical"></i>
-                            <span>Tratamientos</span></a>
+                            <span>Historial Médico</span></a>
                     </li>
                 @endif
             @endif

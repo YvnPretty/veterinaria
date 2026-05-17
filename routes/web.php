@@ -14,4 +14,9 @@ Route::middleware("auth")->group(function () {
     Route::get('/home',[AuthController::class,'home'])->name('home');
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
     Route::resource('/usuarios', \App\Http\Controllers\UsuarioController::class);
+    
+    // Gestión Veterinaria
+    Route::resource('pacientes', \App\Http\Controllers\PacienteController::class);
+    Route::resource('citas', \App\Http\Controllers\CitaController::class);
+    Route::resource('historial', \App\Http\Controllers\HistorialController::class);
 });
