@@ -54,14 +54,14 @@
 </style>
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-12" data-aos="fade-down">
         <!-- Welcome Banner -->
-        <div class="welcome-banner shadow-sm">
+        <div class="welcome-banner shadow-sm animate__animated animate__fadeIn">
             <img src="{{ asset('img/dogs_banner.png') }}" alt="Mascotas" class="welcome-banner-img">
             <div class="welcome-content">
                 <h2 style="font-weight: 800; color: #003366; margin-bottom: 10px; font-size: 1.8rem;">¡Hola, {{ Auth::user()->name }}!</h2>
                 <p style="color: #4a5568; font-size: 1.05rem; margin-bottom: 1.5rem; font-weight: 500;">Bienvenido de nuevo a VetCare. Aquí puedes ver el estado de tus mascotas y sus próximas citas.</p>
-                <a href="#" class="btn btn-primary px-4 py-2" style="border-radius: 12px; font-weight: 700;">
+                <a href="#" class="btn btn-primary px-4 py-2 animate__animated animate__pulse animate__infinite" style="border-radius: 12px; font-weight: 700;">
                     <i class="fas fa-calendar-plus mr-2"></i> Agendar nueva cita
                 </a>
             </div>
@@ -72,14 +72,14 @@
 <div class="row">
     <!-- Mis Mascotas Section -->
     <div class="col-lg-8">
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-4" data-aos="fade-right">
             <h4 style="font-weight: 800; color: #1f2d3d;">Mis Mascotas</h4>
             <a href="#" class="text-primary font-weight-bold">Ver todas</a>
         </div>
         
         <div class="row">
             <!-- Pet 1 -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="100">
                 <div class="pet-card">
                     <div class="d-flex align-items-center mb-3">
                         <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="pet-avatar" alt="Mascota">
@@ -101,7 +101,7 @@
                 </div>
             </div>
             <!-- Pet 2 -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="200">
                 <div class="pet-card">
                     <div class="d-flex align-items-center mb-3">
                         <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="pet-avatar" alt="Mascota">
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Próximas Citas -->
-        <div class="card border-0 shadow-sm rounded-lg mb-4" style="border-radius: 20px;">
+        <div class="card border-0 shadow-sm rounded-lg mb-4" style="border-radius: 20px;" data-aos="fade-up" data-aos-delay="300">
             <div class="card-body p-4">
                 <h5 class="font-weight-bold mb-4">Próximas Citas</h5>
                 <div class="table-responsive">
@@ -159,7 +159,7 @@
 
     <!-- Right Column: Tips & Info -->
     <div class="col-lg-4">
-        <div class="card border-0 bg-gradient-primary text-white shadow-sm mb-4" style="border-radius: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div class="card border-0 bg-gradient-primary text-white shadow-sm mb-4" style="border-radius: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" data-aos="fade-left">
             <div class="card-body p-4">
                 <i class="fas fa-lightbulb fa-2x mb-3 text-warning"></i>
                 <h5 class="font-weight-bold">Tip del día</h5>
@@ -167,7 +167,7 @@
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;">
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px;" data-aos="fade-left" data-aos-delay="200">
             <div class="card-body p-4">
                 <h5 class="font-weight-bold mb-4">Atención al Cliente</h5>
                 <div class="d-flex align-items-center mb-3">
