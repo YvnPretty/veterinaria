@@ -69,6 +69,8 @@
                     <td>
                         @if($usuario->rol == 'administrador')
                             <span class="badge-soft-purple">Administrador</span>
+                        @elseif($usuario->rol == 'usuario')
+                            <span class="badge-soft-info" style="background-color: #e6f7ff; color: #1890ff; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.75rem;">Usuario</span>
                         @else
                             <span class="badge-soft-success">Veterinario</span>
                         @endif
