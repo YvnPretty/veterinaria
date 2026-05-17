@@ -39,7 +39,19 @@
                 </div>
                 <div class="sidebar-brand-text mx-3 text-left leading-tight" style="line-height: 1.2;">
                     <div style="font-size: 1.2rem;">VetCare</div>
-                    <div style="font-size: 0.7rem; font-weight: normal; color: #858796;">Clínica Veterinaria</div>
+                    <div style="font-size: 0.7rem; font-weight: normal; color: #858796;">
+                        @if(Auth::check())
+                            @if(Auth::user()->rol === 'administrador')
+                                Panel de Administración
+                            @elseif(Auth::user()->rol === 'usuario')
+                                Área de Cliente
+                            @else
+                                Clínica Veterinaria
+                            @endif
+                        @else
+                            Clínica Veterinaria
+                        @endif
+                    </div>
                 </div>
             </a>
 
