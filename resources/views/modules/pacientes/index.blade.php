@@ -60,8 +60,14 @@
                     <td style="color: #858796;">{{ $paciente->especie }} / {{ $paciente->raza ?? 'N/A' }}</td>
                     <td>{{ $paciente->edad ? $paciente->edad . ' años' : 'N/A' }}</td>
                     <td>
-                        <div class="font-weight-bold">{{ $paciente->nombre_propietario }}</div>
-                        <div class="small text-muted">{{ $paciente->telefono_propietario }}</div>
+                        <div class="font-weight-bold">
+                            @if($paciente->user)
+                                <i class="fas fa-user-check text-primary mr-1"></i> {{ $paciente->user->name }}
+                            @else
+                                {{ $paciente->nombre_propietario }}
+                            @endif
+                        </div>
+                        <div class="small text-muted">{{ $paciente->user ? $paciente->user->email : $paciente->telefono_propietario }}</div>
                     </td>
                     <td class="text-right">
                         <a href="{{ route('pacientes.edit', $paciente->id) }}" class="btn-action edit" title="Editar">

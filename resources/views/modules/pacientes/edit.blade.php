@@ -89,16 +89,31 @@
         <hr class="my-4">
         <h5 class="mb-4 text-primary font-weight-bold"><i class="fas fa-user mr-2"></i> Información del Propietario</h5>
         <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="user_id" class="form-label">Seleccionar Dueño Registrado (Opcional)</label>
+                <select class="form-control form-control-vet @error('user_id') is-invalid @enderror" id="user_id" name="user_id">
+                    <option value="">-- Dueño no registrado en el sistema --</option>
+                    @foreach($usuarios as $usuario)
+                        <option value="{{ $usuario->id }}" {{ old('user_id', $paciente->user_id) == $usuario->id ? 'selected' : '' }}>
+                            {{ $usuario->name }} ({{ $usuario->email }})
+                        </option>
+                    @endforeach
+                </select>
+                <small class="text-muted">Si seleccionas un dueño registrado, los campos de abajo son opcionales.</small>
+                @error('user_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
             <div class="col-md-6 mb-3">
-                <label for="nombre_propietario" class="form-label">Nombre Completo del Dueño</label>
-                <input type="text" class="form-control form-control-vet @error('nombre_propietario') is-invalid @enderror" id="nombre_propietario" name="nombre_propietario" value="{{ old('nombre_propietario', $paciente->nombre_propietario) }}" required>
+                <label for="nombre_propietario" class="form-label">Nombre del Dueño (Manual)</label>
+                <input type="text" class="form-control form-control-vet @error('nombre_propietario') is-invalid @enderror" id="nombre_propietario" name="nombre_propietario" value="{{ old('nombre_propietario', $paciente->nombre_propietario) }}">
                 @error('nombre_propietario')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
             <div class="col-md-6 mb-3">
                 <label for="telefono_propietario" class="form-label">Teléfono de Contacto</label>
-                <input type="text" class="form-control form-control-vet @error('telefono_propietario') is-invalid @enderror" id="telefono_propietario" name="telefono_propietario" value="{{ old('telefono_propietario', $paciente->telefono_propietario) }}" required>
+                <input type="text" class="form-control form-control-vet @error('telefono_propietario') is-invalid @enderror" id="telefono_propietario" name="telefono_propietario" value="{{ old('telefono_propietario', $paciente->telefono_propietario) }}">
                 @error('telefono_propietario')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

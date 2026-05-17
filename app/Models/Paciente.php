@@ -10,6 +10,7 @@ class Paciente extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'nombre',
         'especie',
         'raza',
@@ -18,4 +19,9 @@ class Paciente extends Model
         'telefono_propietario',
         'observaciones',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
