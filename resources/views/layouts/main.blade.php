@@ -67,11 +67,74 @@
         .vetcare-card { border: none; border-radius: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); }
         .btn { border-radius: 12px; font-weight: 700; padding: 0.6rem 1.25rem; transition: all 0.2s ease; }
         .btn:active { transform: scale(0.98); }
+        .btn-vetcare { background-color: #7b61ff; color: white !important; border-radius: 12px; font-weight: 700; padding: 0.5rem 1.5rem; border: none; transition: all 0.2s ease; }
+        .btn-vetcare:hover { background-color: #512da8; color: white !important; transform: translateY(-1px); }
+
+        /* Premium Off-Canvas Sidebar Overlay Styles */
+        #accordionSidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh !important;
+            z-index: 1040;
+            width: 260px !important;
+            transform: translateX(-100%) !important;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.08) !important;
+        }
+
+        /* Ensure it remains fully expanded when open (toggled) */
+        #accordionSidebar.toggled {
+            width: 260px !important;
+        }
+        #accordionSidebar.toggled .sidebar-brand-text,
+        #accordionSidebar.toggled .nav-item .nav-link span,
+        #accordionSidebar.toggled .sidebar-heading {
+            display: block !important;
+            opacity: 1 !important;
+        }
+        #accordionSidebar.toggled .nav-item .nav-link i {
+            margin-right: 12px !important;
+        }
+        #accordionSidebar.toggled .sidebar-brand {
+            text-align: left !important;
+        }
+
+        /* Show sidebar when body is toggled */
+        body.sidebar-toggled #accordionSidebar {
+            transform: translateX(0) !important;
+        }
+
+        /* Adjust Content Wrapper to take full width */
+        #content-wrapper {
+            width: 100% !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            transition: padding 0.3s ease;
+        }
+
+        /* Sidebar Backdrop styles */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.4); /* Modern slate/dark backdrop */
+            backdrop-filter: blur(4px); /* Sleek modern blur effect */
+            z-index: 1030;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+        @if(!Request::is('expedientes*') && !Route::is('expedientes.*'))
+        <!-- Sidebar Backdrop -->
+        <div id="sidebarBackdrop" class="sidebar-backdrop" style="display: none;"></div>
+
         <!-- Sidebar -->
         <ul class="navbar-nav bg-white sidebar sidebar-light accordion border-right" id="accordionSidebar">
             <!-- Sidebar - Brand -->
@@ -80,7 +143,7 @@
                     <i class="fas fa-paw"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3 text-left leading-tight" style="line-height: 1.2;">
-                    <div style="font-size: 1.2rem;">VetCare</div>
+                    <div style="font-size: 1.1rem; font-weight: 800;">Sistema Veterinario</div>
                     <div style="font-size: 0.7rem; font-weight: normal; color: #858796;">
                         @if(Auth::check())
                             @if(Auth::user()->rol === 'administrador')
@@ -152,10 +215,15 @@
                     </li>
                 @else
                     <!-- Veterinario Menu -->
-                    <li class="nav-item">
+                    <li class="nav-item {{ Route::is('pacientes.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('pacientes.index') }}">
                             <i class="fas fa-fw fa-paw"></i>
                             <span>Pacientes Mascotas</span></a>
+                    </li>
+                    <li class="nav-item {{ Route::is('expedientes.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('expedientes.index') }}">
+                            <i class="fas fa-fw fa-folder-open"></i>
+                            <span>Expedientes</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('citas.index') }}">
@@ -174,11 +242,12 @@
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
+            <div class="text-center d-none">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
         </ul>
         <!-- End of Sidebar -->
+        @endif
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -189,10 +258,32 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                    @if(!Request::is('expedientes*') && !Route::is('expedientes.*'))
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars" style="color: #7b61ff; font-size: 1.25rem;"></i>
                     </button>
+                    @endif
+
+                    <!-- Topbar Nav Links -->
+                    <ul class="navbar-nav mr-auto d-flex align-items-center" style="gap: 10px;">
+                        <li class="nav-item">
+                            <a href="{{ route('home') }}" 
+                               class="btn d-flex align-items-center {{ Route::is('home') ? 'btn-vetcare shadow-sm' : 'text-gray-600' }}" 
+                               style="padding: 0.4rem 1.1rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; {{ Route::is('home') ? '' : 'background-color: transparent;' }}">
+                                <i class="fas fa-home mr-2" style="{{ Route::is('home') ? 'color: white;' : 'color: #7b61ff;' }}"></i>
+                                Sistema Veterinario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('expedientes.index') }}" 
+                               class="btn d-flex align-items-center {{ Route::is('expedientes.*') || Request::is('expedientes*') ? 'btn-vetcare shadow-sm' : 'text-gray-600' }}" 
+                               style="padding: 0.4rem 1.1rem; border-radius: 12px; font-weight: 700; font-size: 0.9rem; transition: all 0.2s; {{ Route::is('expedientes.*') || Request::is('expedientes*') ? '' : 'background-color: transparent;' }}">
+                                <i class="fas fa-folder-open mr-2" style="{{ Route::is('expedientes.*') || Request::is('expedientes*') ? 'color: white;' : 'color: #7b61ff;' }}"></i>
+                                Expedientes
+                            </a>
+                        </li>
+                    </ul>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -292,6 +383,36 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         $(document).ready(function() {
+            // Function to update backdrop visibility and opacity
+            function updateBackdrop() {
+                var backdrop = $("#sidebarBackdrop");
+                if ($("body").hasClass("sidebar-toggled")) {
+                    backdrop.show();
+                    // Force a reflow to trigger CSS transition
+                    backdrop[0].offsetHeight;
+                    backdrop.css("opacity", "1");
+                } else {
+                    backdrop.css("opacity", "0");
+                    setTimeout(function() {
+                        if (!$("body").hasClass("sidebar-toggled")) {
+                            backdrop.hide();
+                        }
+                    }, 300);
+                }
+            }
+
+            // Sync hamburger/backdrop events
+            $("#sidebarToggleTop, #sidebarToggle").on("click", function() {
+                setTimeout(updateBackdrop, 50);
+            });
+
+            // Close sidebar when clicking backdrop
+            $("#sidebarBackdrop").on("click", function() {
+                $("body").removeClass("sidebar-toggled");
+                $("#accordionSidebar").removeClass("toggled");
+                updateBackdrop();
+            });
+
             AOS.init({
                 duration: 800,
                 once: true,

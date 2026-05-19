@@ -19,4 +19,5 @@ Route::middleware("auth")->group(function () {
     Route::resource('pacientes', \App\Http\Controllers\PacienteController::class);
     Route::resource('citas', \App\Http\Controllers\CitaController::class);
     Route::resource('historial', \App\Http\Controllers\HistorialController::class);
+    Route::get('expedientes', [\App\Http\Controllers\ExpedienteController::class, 'index'])->name('expedientes.index');
 });

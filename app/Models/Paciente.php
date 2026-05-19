@@ -24,4 +24,10 @@ class Paciente extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function historiales()
+    {
+        return $this->hasMany(HistorialMedico::class, 'paciente_id')->orderBy('fecha', 'desc');
+    }
 }
+

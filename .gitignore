@@ -23,3 +23,7 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 push_vet.sh
+generar_reporte.php
+REPORTE_API_LIBROS.pdf
+ENTREGA_FINAL_API.pdf
+*.pdf
