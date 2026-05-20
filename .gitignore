@@ -14,8 +14,14 @@
 /auth.json
 /node_modules
 /public/build
+/public/composer.json
+/public/composer.lock
 /public/hot
+/public/vendor
 /public/storage
+/public/copy_images.php
+/public/run_git.php
+/public/test_db.php
 /storage/*.key
 /storage/pail
 /vendor
