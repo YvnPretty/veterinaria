@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'rol',
+        'profile_photo',
     ];
 
     /**
@@ -46,5 +47,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function pacientes()
+    {
+        return $this->hasMany(Paciente::class);
+    }
+
+    public function getProfilePhotoUrlAttribute(): string
+    {
+        return $this->profile_photo
+            ? asset($this->profile_photo)
+            : 'https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg';
     }
 }

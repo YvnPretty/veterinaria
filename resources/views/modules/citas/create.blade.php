@@ -45,10 +45,10 @@
             <div class="col-md-6 mb-3">
                 <label for="paciente_id" class="form-label">Seleccionar Paciente</label>
                 <select class="form-control form-control-vet @error('paciente_id') is-invalid @enderror" id="paciente_id" name="paciente_id" required>
-                    <option value="" disabled selected>Seleccione un paciente...</option>
+                    <option value="" disabled {{ old('paciente_id', request('paciente_id')) ? '' : 'selected' }}>Seleccione un paciente...</option>
                     @foreach($pacientes as $paciente)
-                        <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
-                            {{ $paciente->nombre }} (Propietario: {{ $paciente->nombre_propietario }})
+                        <option value="{{ $paciente->id }}" {{ old('paciente_id', request('paciente_id')) == $paciente->id ? 'selected' : '' }}>
+                            {{ $paciente->nombre }} (Propietario: {{ $paciente->user ? $paciente->user->name : $paciente->nombre_propietario }})
                         </option>
                     @endforeach
                 </select>
@@ -59,7 +59,7 @@
             
             <div class="col-md-6 mb-3">
                 <label for="fecha_hora" class="form-label">Fecha y Hora</label>
-                <input type="datetime-local" class="form-control form-control-vet @error('fecha_hora') is-invalid @enderror" id="fecha_hora" name="fecha_hora" value="{{ old('fecha_hora') }}" required>
+                <input type="datetime-local" class="form-control form-control-vet @error('fecha_hora') is-invalid @enderror" id="fecha_hora" name="fecha_hora" value="{{ old('fecha_hora', request('fecha') ? request('fecha') . 'T09:00' : '') }}" required>
                 @error('fecha_hora')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -67,7 +67,7 @@
             
             <div class="col-md-6 mb-3">
                 <label for="motivo" class="form-label">Motivo de la Cita</label>
-                <input type="text" class="form-control form-control-vet @error('motivo') is-invalid @enderror" id="motivo" name="motivo" placeholder="Ej: Vacunación, Consulta General" value="{{ old('motivo') }}" required>
+                <input type="text" class="form-control form-control-vet @error('motivo') is-invalid @enderror" id="motivo" name="motivo" placeholder="Ej: Vacunación, Consulta General" value="{{ old('motivo', request('motivo')) }}" required>
                 @error('motivo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

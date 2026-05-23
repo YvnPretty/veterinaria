@@ -119,18 +119,18 @@
     <div class="col-lg-8 mb-4">
         
         <!-- Welcome Banner -->
-        <div class="welcome-banner shadow-sm" data-aos="fade-down">
+        <div class="welcome-banner" data-aos="fade-down">
             <img src="{{ asset('img/dogs_banner.png') }}" alt="Mascotas" class="welcome-banner-img">
             <div class="welcome-content">
-                <h2 style="font-weight: 800; color: #1e293b; margin-bottom: 12px; font-size: calc(1.5rem + 1vw);">¡Hola, {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Doc' }}!</h2>
-                <p style="color: #475569; font-size: 1.1rem; margin-bottom: 0; font-weight: 500; line-height: 1.5;">Tienes una jornada activa hoy. Aquí está el resumen de tu clínica.</p>
+                <h2 style="font-weight: 800; margin-bottom: 12px; font-size: calc(1.5rem + 1vw);">¡Hola, {{ Auth::check() ? explode(' ', Auth::user()->name)[0] : 'Doc' }}!</h2>
+                <p style="font-size: 1.1rem; margin-bottom: 0; font-weight: 500; line-height: 1.5;">Tienes una jornada activa hoy. Aquí está el resumen de tu clínica.</p>
                 
                 <div class="row mt-4">
                     <div class="col-6 col-md-4 mb-3" data-aos="zoom-in" data-aos-delay="100">
                         <div class="stat-card">
                             <div class="stat-icon purple"><i class="fas fa-calendar-alt"></i></div>
                             <div>
-                                <div class="stat-value">8</div>
+                                <div class="stat-value">{{ $stats['citasHoy'] }}</div>
                                 <div class="stat-label">Citas</div>
                             </div>
                         </div>
@@ -139,17 +139,17 @@
                         <div class="stat-card">
                             <div class="stat-icon blue"><i class="fas fa-paw"></i></div>
                             <div>
-                                <div class="stat-value">24</div>
+                                <div class="stat-value">{{ $stats['pacientes'] }}</div>
                                 <div class="stat-label">Pacientes</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-4 mb-3" data-aos="zoom-in" data-aos-delay="300">
                         <div class="stat-card">
-                            <div class="stat-icon green"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="stat-icon green"><i class="fas fa-notes-medical"></i></div>
                             <div>
-                                <div class="stat-value">15</div>
-                                <div class="stat-label">Facturas</div>
+                                <div class="stat-value">{{ $stats['consultasMes'] }}</div>
+                                <div class="stat-label">Consultas</div>
                             </div>
                         </div>
                     </div>
@@ -168,24 +168,26 @@
                     <div class="table-responsive">
                         <table class="table table-clean">
                             <tbody>
-                                <tr>
-                                    <td><span class="text-primary font-weight-bold">09:00</span></td>
-                                    <td><strong>Max</strong></td>
-                                    <td class="text-muted d-none d-sm-table-cell">Consulta General</td>
-                                    <td class="text-right"><span class="badge-soft-success">Completada</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-primary font-weight-bold">10:30</span></td>
-                                    <td><strong>Luna</strong></td>
-                                    <td class="text-muted d-none d-sm-table-cell">Vacunación</td>
-                                    <td class="text-right"><span class="badge-soft-purple">En curso</span></td>
-                                </tr>
-                                <tr>
-                                    <td><span class="text-primary font-weight-bold">12:00</span></td>
-                                    <td><strong>Rocky</strong></td>
-                                    <td class="text-muted d-none d-sm-table-cell">Control Semanal</td>
-                                    <td class="text-right"><span class="badge-soft-warning">Pendiente</span></td>
-                                </tr>
+                                @forelse($citasHoy as $cita)
+                                    <tr>
+                                        <td><span class="text-primary font-weight-bold">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('H:i') }}</span></td>
+                                        <td><strong>{{ $cita->paciente->nombre }}</strong></td>
+                                        <td class="text-muted d-none d-sm-table-cell">{{ $cita->motivo }}</td>
+                                        <td class="text-right">
+                                            @if($cita->estado === 'completada')
+                                                <span class="badge-soft-success">Completada</span>
+                                            @elseif($cita->estado === 'en_proceso')
+                                                <span class="badge-soft-purple">En curso</span>
+                                            @else
+                                                <span class="badge-soft-warning">{{ ucfirst(str_replace('_', ' ', $cita->estado)) }}</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">No hay citas programadas para hoy.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -216,22 +218,22 @@
                     <div class="list-item">
                         <div class="stat-icon" style="background: #f8fafc; color: #64748b;"><i class="far fa-bell"></i></div>
                         <div class="list-info">
-                            <div class="list-title">Vacunas Pendientes</div>
-                            <div class="list-desc text-danger font-weight-bold">3 pacientes hoy</div>
+                            <div class="list-title">Citas pendientes</div>
+                            <div class="list-desc text-danger font-weight-bold">{{ $citasHoy->where('estado', 'pendiente')->count() }} pacientes hoy</div>
                         </div>
                     </div>
                     <div class="list-item">
                         <div class="stat-icon" style="background: #f8fafc; color: #64748b;"><i class="fas fa-shield-alt"></i></div>
                         <div class="list-info">
-                            <div class="list-title">Controles de Peso</div>
-                            <div class="list-desc">5 pacientes este mes</div>
+                            <div class="list-title">Consultas del mes</div>
+                            <div class="list-desc">{{ $stats['consultasMes'] }} registros clínicos</div>
                         </div>
                     </div>
                     <div class="list-item mb-0">
                         <div class="stat-icon" style="background: #f8fafc; color: #64748b;"><i class="far fa-calendar-check"></i></div>
                         <div class="list-info">
-                            <div class="list-title">Cirugías Agendadas</div>
-                            <div class="list-desc">1 para mañana</div>
+                            <div class="list-title">Agenda de mañana</div>
+                            <div class="list-desc">{{ $citasManana->count() }} citas programadas</div>
                         </div>
                     </div>
                 </div>
@@ -244,44 +246,47 @@
         <!-- Próximas Citas -->
         <div class="vet-card mb-4" data-aos="fade-left">
             <h5 class="vet-card-title">Mañana</h5>
-            <div class="list-item">
-                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="avatar-circle" alt="Dog">
-                <div class="list-info flex-grow-1">
-                    <div class="list-time">09:00 AM</div>
-                    <div class="list-title">Bella</div>
-                    <div class="list-desc">Control Post-Operación</div>
+            @forelse($citasManana as $cita)
+                <div class="list-item">
+                    <div class="avatar-circle d-flex align-items-center justify-content-center bg-primary text-white font-weight-bold">
+                        {{ strtoupper(substr($cita->paciente->nombre, 0, 1)) }}
+                    </div>
+                    <div class="list-info flex-grow-1">
+                        <div class="list-time">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('h:i A') }}</div>
+                        <div class="list-title">{{ $cita->paciente->nombre }}</div>
+                        <div class="list-desc">{{ $cita->motivo }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="list-item">
-                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="avatar-circle" alt="Cat">
-                <div class="list-info flex-grow-1">
-                    <div class="list-time">11:30 AM</div>
-                    <div class="list-title">Simba</div>
-                    <div class="list-desc">Triple Felina</div>
+            @empty
+                <div class="text-center text-muted py-3">
+                    <i class="far fa-calendar-check fa-2x mb-2 text-light"></i>
+                    <div class="small font-weight-bold">Mañana no hay citas.</div>
                 </div>
-            </div>
+            @endforelse
             <div class="mt-4 pt-2">
-                <a href="{{ route('citas.index') }}" class="btn btn-outline-primary btn-block" style="border-width: 2px;">Ver Calendario</a>
+                <a href="{{ route('citas.calendario') }}" class="btn btn-outline-primary btn-block" style="border-width: 2px;">Ver Calendario</a>
             </div>
         </div>
 
         <!-- Pacientes recientes -->
         <div class="vet-card mb-4" data-aos="fade-left" data-aos-delay="200">
             <h5 class="vet-card-title">Altas Recientes</h5>
-            <div class="list-item">
-                <img src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="avatar-circle" alt="Dog">
-                <div class="list-info">
-                    <div class="list-title">Rocky</div>
-                    <div class="list-desc">Golden Retriever • Sano</div>
+            @forelse($altasRecientes as $registro)
+                <div class="list-item {{ $loop->last ? 'mb-0' : '' }}">
+                    <div class="avatar-circle d-flex align-items-center justify-content-center bg-success text-white font-weight-bold">
+                        {{ strtoupper(substr($registro->paciente->nombre, 0, 1)) }}
+                    </div>
+                    <div class="list-info">
+                        <div class="list-title">{{ $registro->paciente->nombre }}</div>
+                        <div class="list-desc">{{ Str::limit($registro->diagnostico, 55) }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="list-item mb-0">
-                <img src="https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="avatar-circle" alt="Cat">
-                <div class="list-info">
-                    <div class="list-title">Luna</div>
-                    <div class="list-desc">Gato Común • Controlado</div>
+            @empty
+                <div class="text-center text-muted py-3">
+                    <i class="fas fa-notes-medical fa-2x mb-2 text-light"></i>
+                    <div class="small font-weight-bold">No hay registros recientes.</div>
                 </div>
-            </div>
+            @endforelse
             <div class="mt-4 pt-2 text-center">
                 <a href="{{ route('pacientes.index') }}" class="link-action font-weight-bold">Base de Datos Completa <i class="fas fa-database ml-1"></i></a>
             </div>

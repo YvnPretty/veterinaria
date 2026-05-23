@@ -23,13 +23,15 @@
 
 <div class="row mb-4 align-items-center">
     <div class="col-md-6" data-aos="fade-right">
-        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">Historial Médico</h2>
-        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">Registros clínicos de todos los pacientes.</p>
+        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">{{ Auth::user()->rol === 'usuario' ? 'Historial de mis Mascotas' : 'Historial Médico' }}</h2>
+        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">{{ Auth::user()->rol === 'usuario' ? 'Consultas y tratamientos registrados por la clínica.' : 'Registros clínicos de todos los pacientes.' }}</p>
     </div>
     <div class="col-md-6 text-right" data-aos="fade-left">
-        <a href="{{ route('historial.create') }}" class="btn btn-vetcare">
-            <i class="fas fa-file-medical mr-2"></i> Nuevo Registro
-        </a>
+        @if(Auth::user()->rol !== 'usuario')
+            <a href="{{ route('historial.create') }}" class="btn btn-vetcare">
+                <i class="fas fa-file-medical mr-2"></i> Nuevo Registro
+            </a>
+        @endif
     </div>
 </div>
 
@@ -69,6 +71,10 @@
                         <span class="badge-soft-purple">{{ $registro->veterinario->name }}</span>
                     </td>
                     <td class="text-right">
+                        <a href="{{ route('expedientes.index', ['id' => $registro->paciente_id]) }}" class="btn-action edit" title="Ver expediente">
+                            <i class="fas fa-folder-open"></i>
+                        </a>
+                        @if(Auth::user()->rol !== 'usuario')
                         <a href="{{ route('historial.edit', $registro->id) }}" class="btn-action edit" title="Ver / Editar">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -79,6 +85,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @empty

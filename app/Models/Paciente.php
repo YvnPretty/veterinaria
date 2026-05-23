@@ -29,5 +29,9 @@ class Paciente extends Model
     {
         return $this->hasMany(HistorialMedico::class, 'paciente_id')->orderBy('fecha', 'desc');
     }
-}
 
+    public function citas()
+    {
+        return $this->hasMany(Cita::class)->orderBy('fecha_hora', 'asc');
+    }
+}

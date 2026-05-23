@@ -22,13 +22,15 @@
 
 <div class="row mb-4 align-items-center">
     <div class="col-md-6" data-aos="fade-right">
-        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">Pacientes Mascotas</h2>
-        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">Listado de mascotas registradas en la clínica.</p>
+        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">{{ Auth::user()->rol === 'usuario' ? 'Mis Mascotas' : 'Pacientes Mascotas' }}</h2>
+        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">{{ Auth::user()->rol === 'usuario' ? 'Mascotas registradas a tu nombre.' : 'Listado de mascotas registradas en la clínica.' }}</p>
     </div>
     <div class="col-md-6 text-right" data-aos="fade-left">
-        <a href="{{ route('pacientes.create') }}" class="btn btn-vetcare">
-            <i class="fas fa-plus mr-2"></i> Registrar Paciente
-        </a>
+        @if(Auth::user()->rol !== 'usuario')
+            <a href="{{ route('pacientes.create') }}" class="btn btn-vetcare">
+                <i class="fas fa-plus mr-2"></i> Registrar Paciente
+            </a>
+        @endif
     </div>
 </div>
 
@@ -70,6 +72,10 @@
                         <div class="small text-muted">{{ $paciente->user ? $paciente->user->email : $paciente->telefono_propietario }}</div>
                     </td>
                     <td class="text-right">
+                        <a href="{{ route('expedientes.index', ['id' => $paciente->id]) }}" class="btn-action edit" title="Ver expediente">
+                            <i class="fas fa-folder-open"></i>
+                        </a>
+                        @if(Auth::user()->rol !== 'usuario')
                         <a href="{{ route('pacientes.edit', $paciente->id) }}" class="btn-action edit" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -80,6 +86,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @empty

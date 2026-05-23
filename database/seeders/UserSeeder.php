@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             ['email' => 'admin@vetcare.com'],
             [
                 'name' => 'Admin VetCare',
-                'password' => Hash::make('1234'),
+                'password' => Hash::make('123'),
                 'rol' => 'administrador',
             ]
         );
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             ['email' => 'laura@vetcare.com'],
             [
                 'name' => 'Dra. Laura Pérez',
-                'password' => Hash::make('1234'),
+                'password' => Hash::make('123'),
                 'rol' => 'veterinario',
             ]
         );
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
             ['email' => 'pedro@vetcare.com'],
             [
                 'name' => 'Dr. Pedro Gómez',
-                'password' => Hash::make('1234'),
+                'password' => Hash::make('123'),
                 'rol' => 'veterinario',
             ]
         );

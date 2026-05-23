@@ -45,10 +45,10 @@
             <div class="col-md-6 mb-3">
                 <label for="paciente_id" class="form-label">Paciente</label>
                 <select class="form-control form-control-vet @error('paciente_id') is-invalid @enderror" id="paciente_id" name="paciente_id" required>
-                    <option value="" disabled selected>Seleccione un paciente...</option>
+                    <option value="" disabled {{ old('paciente_id', request('paciente_id')) ? '' : 'selected' }}>Seleccione un paciente...</option>
                     @foreach($pacientes as $paciente)
-                        <option value="{{ $paciente->id }}" {{ old('paciente_id') == $paciente->id ? 'selected' : '' }}>
-                            {{ $paciente->nombre }} (Propietario: {{ $paciente->nombre_propietario }})
+                        <option value="{{ $paciente->id }}" {{ old('paciente_id', request('paciente_id')) == $paciente->id ? 'selected' : '' }}>
+                            {{ $paciente->nombre }} (Propietario: {{ $paciente->user ? $paciente->user->name : $paciente->nombre_propietario }})
                         </option>
                     @endforeach
                 </select>

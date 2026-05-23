@@ -66,11 +66,11 @@
 <div class="row">
     <div class="col-12" data-aos="fade-down">
         <!-- Welcome Banner -->
-        <div class="welcome-banner shadow-sm animate__animated animate__fadeIn">
+        <div class="welcome-banner animate__animated animate__fadeIn">
             <img src="{{ asset('img/dogs_banner.png') }}" alt="Mascotas" class="welcome-banner-img">
             <div class="welcome-content">
-                <h2 style="font-weight: 800; color: #003366; margin-bottom: 10px; font-size: calc(1.3rem + 1vw);">¡Hola, {{ Auth::user()->name }}!</h2>
-                <p style="color: #4a5568; font-size: 1rem; margin-bottom: 1.5rem; font-weight: 500;">Bienvenido a VetCare. Aquí puedes ver el estado de tus mascotas.</p>
+                <h2 style="font-weight: 800; margin-bottom: 10px; font-size: calc(1.3rem + 1vw);">¡Hola, {{ Auth::user()->name }}!</h2>
+                <p style="font-size: 1rem; margin-bottom: 1.5rem; font-weight: 500;">Bienvenido a VetCare. Aquí puedes ver el estado de tus mascotas.</p>
                 <a href="{{ route('citas.create') }}" class="btn btn-primary px-4 py-2 animate__animated animate__pulse animate__infinite" style="border-radius: 12px; font-weight: 700; width: 100%; max-width: 250px;">
                     <i class="fas fa-calendar-plus mr-2"></i> Agendar nueva cita
                 </a>
@@ -84,54 +84,54 @@
     <div class="col-lg-8">
         <div class="d-flex align-items-center justify-content-between mb-4" data-aos="fade-right">
             <h4 style="font-weight: 800; color: #1f2d3d; font-size: 1.25rem;">Mis Mascotas</h4>
-            <a href="#" class="text-primary font-weight-bold small">Ver todas</a>
+            <a href="{{ route('pacientes.index') }}" class="text-primary font-weight-bold small">Ver todas</a>
         </div>
         
         <div class="row">
-            <!-- Pet 1 -->
-            <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in" data-aos-delay="100">
-                <div class="pet-card">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="pet-avatar" alt="Mascota">
-                        <div class="ml-3">
-                            <h5 class="mb-0 font-weight-bold" style="font-size: 1.1rem;">Bella</h5>
-                            <span class="text-muted small">Golden Retriever • 3 años</span>
+            @forelse($pacientes as $paciente)
+                @php
+                    $proximaCita = $paciente->citas
+                        ->filter(function ($cita) {
+                            return in_array($cita->estado, ['pendiente', 'en_proceso'])
+                                && \Carbon\Carbon::parse($cita->fecha_hora)->greaterThanOrEqualTo(now());
+                        })
+                        ->sortBy('fecha_hora')
+                        ->first();
+                    $ultimoRegistro = $paciente->historiales->first();
+                @endphp
+                <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in" data-aos-delay="{{ 100 + ($loop->index * 100) }}">
+                    <a href="{{ route('expedientes.index', ['id' => $paciente->id]) }}" class="text-decoration-none">
+                        <div class="pet-card">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="pet-avatar d-flex align-items-center justify-content-center bg-primary text-white font-weight-bold" style="font-size: 1.4rem;">
+                                    {{ strtoupper(substr($paciente->nombre, 0, 1)) }}
+                                </div>
+                                <div class="ml-3">
+                                    <h5 class="mb-0 font-weight-bold text-gray-900" style="font-size: 1.1rem;">{{ $paciente->nombre }}</h5>
+                                    <span class="text-muted small">{{ $paciente->especie }} {{ $paciente->raza ? '• ' . $paciente->raza : '' }} {{ $paciente->edad ? '• ' . $paciente->edad . ' años' : '' }}</span>
+                                </div>
+                            </div>
+                            <div class="bg-light p-3 rounded" style="border-radius: 12px!important;">
+                                <div class="d-flex justify-content-between mb-1 small">
+                                    <span class="text-muted">Próxima cita:</span>
+                                    <span class="font-weight-bold">{{ $proximaCita ? \Carbon\Carbon::parse($proximaCita->fecha_hora)->format('d/m/Y') : 'Sin cita' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between small">
+                                    <span class="text-muted">Última consulta:</span>
+                                    <span class="font-weight-bold">{{ $ultimoRegistro ? \Carbon\Carbon::parse($ultimoRegistro->fecha)->format('d/m/Y') : 'Sin registro' }}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="bg-light p-3 rounded" style="border-radius: 12px!important;">
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span class="text-muted">Próxima Vacuna:</span>
-                            <span class="font-weight-bold">15 Jun 2026</span>
-                        </div>
-                        <div class="d-flex justify-content-between small">
-                            <span class="text-muted">Último Peso:</span>
-                            <span class="font-weight-bold">24.5 kg</span>
-                        </div>
+                    </a>
+                </div>
+            @empty
+                <div class="col-12 mb-4">
+                    <div class="pet-card text-center text-muted">
+                        <i class="fas fa-paw fa-2x mb-3 text-light"></i>
+                        <p class="font-weight-bold mb-0">Aún no tienes mascotas registradas.</p>
                     </div>
                 </div>
-            </div>
-            <!-- Pet 2 -->
-            <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in" data-aos-delay="200">
-                <div class="pet-card">
-                    <div class="d-flex align-items-center mb-3">
-                        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" class="pet-avatar" alt="Mascota">
-                        <div class="ml-3">
-                            <h5 class="mb-0 font-weight-bold" style="font-size: 1.1rem;">Simba</h5>
-                            <span class="text-muted small">Gato Persa • 1 año</span>
-                        </div>
-                    </div>
-                    <div class="bg-light p-3 rounded" style="border-radius: 12px!important;">
-                        <div class="d-flex justify-content-between mb-1 small">
-                            <span class="text-muted">Próxima Vacuna:</span>
-                            <span class="font-weight-bold">Mañana</span>
-                        </div>
-                        <div class="d-flex justify-content-between small">
-                            <span class="text-muted">Último Peso:</span>
-                            <span class="font-weight-bold">4.2 kg</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
 
         <!-- Próximas Citas -->
@@ -149,17 +149,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-top">
-                                <td class="py-3">
-                                    <div class="font-weight-bold small">17 Mayo, 2026</div>
-                                    <div class="small text-muted">11:00 AM</div>
-                                </td>
-                                <td class="py-3 small">Simba</td>
-                                <td class="py-3 small">Vacunación Anual</td>
-                                <td class="py-3 text-right">
-                                    <span class="badge badge-pill badge-warning px-2 py-1 small">Confirmada</span>
-                                </td>
-                            </tr>
+                            @forelse($proximasCitas as $cita)
+                                <tr class="border-top">
+                                    <td class="py-3">
+                                        <div class="font-weight-bold small">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('d/m/Y') }}</div>
+                                        <div class="small text-muted">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('h:i A') }}</div>
+                                    </td>
+                                    <td class="py-3 small">{{ $cita->paciente->nombre }}</td>
+                                    <td class="py-3 small">{{ $cita->motivo }}</td>
+                                    <td class="py-3 text-right">
+                                        <span class="badge badge-pill badge-warning px-2 py-1 small">{{ str_replace('_', ' ', ucfirst($cita->estado)) }}</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr class="border-top">
+                                    <td colspan="4" class="py-4 text-center text-muted small font-weight-bold">No tienes citas próximas.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

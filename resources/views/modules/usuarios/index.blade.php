@@ -26,6 +26,7 @@
 .btn-action { color: #a0a5ba; background: transparent; border: none; margin-right: 5px; transition: color 0.2s;}
 .btn-action.edit:hover { color: #1890ff; }
 .btn-action.delete:hover { color: #e74a3b; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #f2eefd; }
 </style>
 
 <div class="row mb-4 align-items-center">
@@ -64,7 +65,12 @@
             <tbody>
                 @forelse($usuarios as $usuario)
                 <tr>
-                    <td><strong>{{ $usuario->name }}</strong></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ $usuario->profile_photo_url }}" alt="Foto de {{ $usuario->name }}" class="user-avatar mr-3">
+                            <strong>{{ $usuario->name }}</strong>
+                        </div>
+                    </td>
                     <td style="color: #858796;">{{ $usuario->email }}</td>
                     <td>
                         @if($usuario->rol == 'administrador')
@@ -77,6 +83,9 @@
                     </td>
                     <td style="color: #858796;">{{ $usuario->created_at->format('d M, Y') }}</td>
                     <td class="text-right">
+                        <a href="{{ route('perfil.show', $usuario->id) }}" class="btn-action edit" title="Ver perfil">
+                            <i class="fas fa-id-card"></i>
+                        </a>
                         <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn-action edit" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>

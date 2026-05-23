@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -126,6 +131,181 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
+        /* Custom VetCare Form Controls - Centralized for vertical alignment and styling */
+        .form-control-vet {
+            height: auto !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 12px !important;
+            border: 1px solid #e3e6f0 !important;
+            color: #3a3b45 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.5 !important;
+            vertical-align: middle !important;
+        }
+        
+        select.form-control-vet {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 1rem center !important;
+            background-size: 16px 12px !important;
+            padding-right: 2.5rem !important;
+        }
+        
+        .form-control-vet:focus {
+            border-color: #7b61ff !important;
+            box-shadow: 0 0 0 0.2rem rgba(123, 97, 255, 0.25) !important;
+        }
+
+        /* Dark Mode Styling - Fino y Suave */
+        .dark-mode {
+            background-color: #0f172a !important;
+            color: #cbd5e1 !important;
+        }
+        .dark-mode #wrapper #content-wrapper {
+            background-color: #0f172a !important;
+        }
+        .dark-mode .topbar,
+        .dark-mode #accordionSidebar {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        .dark-mode .sidebar-light .nav-item .nav-link {
+            color: #94a3b8 !important;
+        }
+        .dark-mode .sidebar-light .nav-item .nav-link:hover:not(.active) {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        .dark-mode .vet-card,
+        .dark-mode .card,
+        .dark-mode .vetcare-card,
+        .dark-mode .search-card,
+        .dark-mode .dossier-card,
+        .dark-mode .patient-card,
+        .dark-mode .timeline-card {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+            color: #cbd5e1 !important;
+        }
+        .dark-mode .patient-card.active {
+            border-color: #7b61ff !important;
+            background-color: #1e1b4b !important;
+        }
+        .dark-mode .patient-card:hover:not(.active) {
+            border-color: #475569 !important;
+            background-color: #334155 !important;
+        }
+        .dark-mode h1,
+        .dark-mode h2,
+        .dark-mode h3,
+        .dark-mode h4,
+        .dark-mode h5,
+        .dark-mode h6,
+        .dark-mode .text-gray-800,
+        .dark-mode .text-gray-900,
+        .dark-mode .form-label,
+        .dark-mode .sidebar-brand,
+        .dark-mode strong {
+            color: #f8fafc !important;
+        }
+        .dark-mode .text-gray-600,
+        .dark-mode .text-muted,
+        .dark-mode p {
+            color: #94a3b8 !important;
+        }
+        .dark-mode .form-control-vet,
+        .dark-mode .form-control {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        .dark-mode .form-control-vet:focus {
+            border-color: #7b61ff !important;
+        }
+        .dark-mode table,
+        .dark-mode table.table-clean td,
+        .dark-mode table.table-clean th {
+            border-color: #334155 !important;
+            color: #cbd5e1 !important;
+        }
+        .dark-mode .bg-light,
+        .dark-mode .timeline::before {
+            background-color: #334155 !important;
+        }
+        .dark-mode .dropdown-menu {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+        .dark-mode .dropdown-item {
+            color: #cbd5e1 !important;
+        }
+        .dark-mode .dropdown-item:hover {
+            background-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        .dark-mode footer {
+            background-color: #1e293b !important;
+            border-top: 1px solid #334155 !important;
+        }
+        .dark-mode footer span {
+            color: #94a3b8 !important;
+        }
+        .dark-mode select.form-control-vet {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23cbd5e1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e") !important;
+        }
+
+        /* Welcome Banner Styling - Blends directly into body background */
+        .welcome-banner {
+            background: #f4f6f9 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        
+        .welcome-banner-img {
+            mix-blend-mode: multiply !important;
+            opacity: 0.95 !important;
+        }
+        
+        .welcome-banner h2 {
+            color: #1f2d3d !important;
+        }
+        
+        .welcome-banner p {
+            color: #475569 !important;
+        }
+
+        /* Dark Mode Welcome Banner Override */
+        .dark-mode .welcome-banner {
+            background: #0f172a !important;
+        }
+        
+        .dark-mode .welcome-banner h2 {
+            color: #f8fafc !important;
+        }
+        
+        .dark-mode .welcome-banner p {
+            color: #cbd5e1 !important;
+        }
+
+        .dark-mode .welcome-banner-img {
+            mix-blend-mode: multiply !important;
+            opacity: 0.85 !important;
+        }
+
+        .dark-mode .stat-card {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+            color: #cbd5e1 !important;
+        }
+
+        body, #wrapper #content-wrapper, .topbar, #accordionSidebar, .card, .vet-card, .form-control-vet {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+        }
     </style>
 </head>
 <body id="page-top">
@@ -181,7 +361,7 @@
             @if(Auth::check())
                 @if(Auth::user()->rol === 'administrador')
                     <!-- Administrador Menu -->
-                    <li class="nav-item">
+                    <li class="nav-item {{ Route::is('usuarios.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('usuarios.index') }}">
                             <i class="fas fa-fw fa-users"></i>
                             <span>Usuarios</span></a>
@@ -196,25 +376,16 @@
                             <i class="fas fa-fw fa-cogs"></i>
                             <span>Configuración del Sistema</span></a>
                     </li>
-                @elseif(Auth::user()->rol === 'usuario')
-                    <!-- Usuario/Cliente Menu -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-fw fa-paw"></i>
-                            <span>Mis Mascotas</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-fw fa-calendar-alt"></i>
-                            <span>Mis Citas</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-fw fa-file-medical"></i>
-                            <span>Historial Médico</span></a>
-                    </li>
-                @else
-                    <!-- Veterinario Menu -->
+                @endif
+
+                @if(Auth::user()->rol === 'administrador' || Auth::user()->rol === 'veterinario')
+                    <!-- Heading -->
+                    <hr class="sidebar-divider">
+                    <div class="sidebar-heading">
+                        Gestión Clínica
+                    </div>
+
+                    <!-- Veterinario / Administrador Menu -->
                     <li class="nav-item {{ Route::is('pacientes.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('pacientes.index') }}">
                             <i class="fas fa-fw fa-paw"></i>
@@ -225,14 +396,33 @@
                             <i class="fas fa-fw fa-folder-open"></i>
                             <span>Expedientes</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ Route::is('citas.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('citas.index') }}">
                             <i class="fas fa-fw fa-calendar-alt"></i>
                             <span>Agenda de Citas</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ Route::is('historial.*') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('historial.index') }}">
                             <i class="fas fa-fw fa-notes-medical"></i>
+                            <span>Historial Médico</span></a>
+                    </li>
+                @endif
+
+                @if(Auth::user()->rol === 'usuario')
+                    <!-- Usuario/Cliente Menu -->
+                    <li class="nav-item {{ Route::is('pacientes.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('pacientes.index') }}">
+                            <i class="fas fa-fw fa-paw"></i>
+                            <span>Mis Mascotas</span></a>
+                    </li>
+                    <li class="nav-item {{ Route::is('citas.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('citas.index') }}">
+                            <i class="fas fa-fw fa-calendar-alt"></i>
+                            <span>Mis Citas</span></a>
+                    </li>
+                    <li class="nav-item {{ Route::is('historial.*') || Route::is('expedientes.*') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('expedientes.index') }}">
+                            <i class="fas fa-fw fa-file-medical"></i>
                             <span>Historial Médico</span></a>
                     </li>
                 @endif
@@ -298,14 +488,18 @@
                                     {{ Auth::check() ? Auth::user()->name : 'Invitado' }}
                                 </span>
                                 <img class="img-profile rounded-circle"
-                                    src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg">
+                                    src="{{ Auth::check() ? Auth::user()->profile_photo_url : 'https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg' }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('perfil.index') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Perfil
+                                </a>
+                                <a class="dropdown-item" href="#" id="darkModeToggle">
+                                    <i class="fas fa-moon fa-sm fa-fw mr-2 text-gray-400" id="darkModeIcon"></i>
+                                    <span id="darkModeText">Modo Oscuro</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -417,6 +611,30 @@
                 duration: 800,
                 once: true,
                 easing: 'ease-in-out'
+            });
+
+            // Dark Mode toggle logic
+            const toggleBtn = $("#darkModeToggle");
+            const toggleIcon = $("#darkModeIcon");
+            const toggleText = $("#darkModeText");
+
+            if ($("html").hasClass("dark-mode")) {
+                toggleIcon.removeClass("fa-moon").addClass("fa-sun");
+                toggleText.text("Modo Claro");
+            }
+
+            toggleBtn.on("click", function(e) {
+                e.preventDefault();
+                $("html").toggleClass("dark-mode");
+                if ($("html").hasClass("dark-mode")) {
+                    localStorage.setItem("theme", "dark");
+                    toggleIcon.removeClass("fa-moon").addClass("fa-sun");
+                    toggleText.text("Modo Claro");
+                } else {
+                    localStorage.setItem("theme", "light");
+                    toggleIcon.removeClass("fa-sun").addClass("fa-moon");
+                    toggleText.text("Modo Oscuro");
+                }
             });
         });
     </script>

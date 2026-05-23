@@ -274,6 +274,64 @@
         align-items: center;
         gap: 8px;
     }
+
+    .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+
+    .quick-action {
+        border-radius: 12px;
+        padding: 0.65rem 1rem;
+        font-weight: 800;
+        font-size: 0.85rem;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        background: #fff;
+        text-decoration: none !important;
+        transition: all 0.2s ease;
+    }
+
+    .quick-action:hover {
+        color: #7b61ff;
+        border-color: #c4b5fd;
+        transform: translateY(-1px);
+    }
+
+    .appointment-card {
+        background: #f8fafc;
+        border: 1px solid #eef2f6;
+        border-radius: 16px;
+        padding: 1rem;
+        height: 100%;
+    }
+
+    .status-pill {
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: capitalize;
+        background: #fff8e6;
+        color: #b7791f;
+    }
+
+    @media (max-width: 991.98px) {
+        .expedientes-container {
+            flex-direction: column;
+        }
+
+        .panel-left {
+            flex: 1;
+            max-width: 100%;
+        }
+
+        .patient-list {
+            max-height: none;
+        }
+    }
 </style>
 
 <div class="expedientes-container">
@@ -292,7 +350,7 @@
         <!-- Patients list -->
         <div class="patient-list" id="patientList">
             @forelse($pacientes as $paciente)
-            <a href="?id={{ $paciente->id }}" 
+            <a href="{{ route('expedientes.index', ['id' => $paciente->id, 'search' => request('search')]) }}" 
                class="patient-card {{ $selectedPaciente && $selectedPaciente->id == $paciente->id ? 'active' : '' }}" 
                data-searchable="{{ strtolower($paciente->nombre . ' ' . $paciente->especie . ' ' . $paciente->raza . ' ' . ($paciente->user ? $paciente->user->name : $paciente->nombre_propietario)) }}">
                 <div class="d-flex align-items-center gap-3">
@@ -349,10 +407,10 @@
                                     <i class="fas fa-user-circle mr-1 text-primary"></i> 
                                     Dueño: <strong>{{ $selectedPaciente->user ? $selectedPaciente->user->name : $selectedPaciente->nombre_propietario }}</strong>
                                 </span>
-                                @if($selectedPaciente->user ? $selectedPaciente->user->email : $selectedPaciente->telefono_propietario)
+                                @if($selectedPaciente->telefono_propietario || ($selectedPaciente->user && $selectedPaciente->user->email))
                                 <span>
                                     <i class="fas fa-phone mr-1 text-success"></i> 
-                                    Contacto: <strong>{{ $selectedPaciente->user ? $selectedPaciente->user->telefono : $selectedPaciente->telefono_propietario }}</strong>
+                                    Contacto: <strong>{{ $selectedPaciente->telefono_propietario ?: $selectedPaciente->user->email }}</strong>
                                 </span>
                                 @endif
                             </div>
@@ -365,6 +423,69 @@
                     <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;"><i class="fas fa-info-circle mr-1 text-primary"></i> Observaciones Generales:</h6>
                     <p class="mb-0 text-muted small" style="line-height: 1.4; font-weight: 500;">{{ $selectedPaciente->observaciones }}</p>
                 </div>
+                @endif
+
+                <div class="quick-actions">
+                    <a href="{{ route('pacientes.index') }}" class="quick-action">
+                        <i class="fas fa-paw mr-1"></i> Ver pacientes
+                    </a>
+                    <a href="{{ route('citas.create', ['paciente_id' => $selectedPaciente->id, 'motivo' => 'Consulta de seguimiento']) }}" class="quick-action">
+                        <i class="fas fa-calendar-plus mr-1"></i> Agendar cita
+                    </a>
+                    @if(Auth::user()->rol !== 'usuario')
+                        <a href="{{ route('historial.create', ['paciente_id' => $selectedPaciente->id]) }}" class="quick-action">
+                            <i class="fas fa-file-medical mr-1"></i> Nuevo registro
+                        </a>
+                        <a href="{{ route('pacientes.edit', $selectedPaciente->id) }}" class="quick-action">
+                            <i class="fas fa-edit mr-1"></i> Editar paciente
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Appointment summary -->
+            <div class="dossier-card">
+                <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
+                    <h4 class="font-weight-extrabold mb-0" style="color: #1f2d3d; font-weight: 800;">
+                        <i class="fas fa-calendar-check mr-2 text-primary"></i> Agenda Relacionada
+                    </h4>
+                    <a href="{{ route('citas.create', ['paciente_id' => $selectedPaciente->id, 'motivo' => 'Consulta de seguimiento']) }}" class="btn btn-vetcare btn-sm mt-2 mt-sm-0">
+                        <i class="fas fa-plus mr-1"></i> Nueva cita
+                    </a>
+                </div>
+
+                @php
+                    $citasPendientes = $selectedPaciente->citas->whereIn('estado', ['pendiente', 'en_proceso'])->take(3);
+                @endphp
+
+                @if($citasPendientes->isNotEmpty())
+                    <div class="row">
+                        @foreach($citasPendientes as $cita)
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="appointment-card">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <div class="font-weight-bold" style="color: #1f2d3d;">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('d/m/Y') }}</div>
+                                            <div class="small text-muted">{{ \Carbon\Carbon::parse($cita->fecha_hora)->format('h:i A') }}</div>
+                                        </div>
+                                        <span class="status-pill">{{ str_replace('_', ' ', $cita->estado) }}</span>
+                                    </div>
+                                    <div class="small font-weight-bold" style="color: #475569;">{{ $cita->motivo }}</div>
+                                    @if($cita->notas)
+                                        <div class="small text-muted mt-2">{{ Str::limit($cita->notas, 70) }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-calendar-times fa-2x mb-2 text-light"></i>
+                        <p class="font-weight-bold mb-2">No hay citas pendientes para este paciente.</p>
+                        <a href="{{ route('citas.create', ['paciente_id' => $selectedPaciente->id, 'motivo' => 'Consulta de seguimiento']) }}" class="btn btn-vetcare btn-sm">
+                            <i class="fas fa-calendar-plus mr-1"></i> Agendar seguimiento
+                        </a>
+                    </div>
                 @endif
             </div>
             
@@ -430,9 +551,11 @@
                     <div class="text-center py-5 text-muted">
                         <i class="fas fa-folder-open fa-3x mb-3 text-light"></i>
                         <p class="font-weight-bold">Este paciente aún no registra consultas en su historial médico.</p>
-                        <a href="{{ route('historial.create') }}" class="btn btn-vetcare btn-sm mt-2">
+                        @if(Auth::user()->rol !== 'usuario')
+                        <a href="{{ route('historial.create', ['paciente_id' => $selectedPaciente->id]) }}" class="btn btn-vetcare btn-sm mt-2">
                             <i class="fas fa-plus mr-1"></i> Agregar Primera Consulta
                         </a>
+                        @endif
                     </div>
                 @endif
             </div>

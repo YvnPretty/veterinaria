@@ -26,10 +26,13 @@
 
 <div class="row mb-4 align-items-center">
     <div class="col-md-6" data-aos="fade-right">
-        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">Agenda de Citas</h2>
-        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">Gestión de consultas y servicios médicos.</p>
+        <h2 style="font-weight: 800; color: #1f2d3d; margin-bottom: 0;">{{ Auth::user()->rol === 'usuario' ? 'Mis Citas' : 'Agenda de Citas' }}</h2>
+        <p style="color: #6e707e; font-size: 1.05rem; margin-bottom: 0; font-weight: 500;">{{ Auth::user()->rol === 'usuario' ? 'Seguimiento de tus próximas consultas y servicios.' : 'Gestión de consultas y servicios médicos.' }}</p>
     </div>
     <div class="col-md-6 text-right" data-aos="fade-left">
+        <a href="{{ route('citas.calendario') }}" class="btn btn-outline-primary mr-2" style="border-radius: 12px; font-weight: 700;">
+            <i class="fas fa-calendar mr-2"></i> Ver Calendario
+        </a>
         <a href="{{ route('citas.create') }}" class="btn btn-vetcare">
             <i class="fas fa-calendar-plus mr-2"></i> Agendar Nueva Cita
         </a>
@@ -83,6 +86,10 @@
                         @endswitch
                     </td>
                     <td class="text-right">
+                        <a href="{{ route('expedientes.index', ['id' => $cita->paciente_id]) }}" class="btn-action edit" title="Ver expediente">
+                            <i class="fas fa-folder-open"></i>
+                        </a>
+                        @if(Auth::user()->rol !== 'usuario')
                         <a href="{{ route('citas.edit', $cita->id) }}" class="btn-action edit" title="Editar / Actualizar Estado">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -93,6 +100,7 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @empty

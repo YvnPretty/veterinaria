@@ -5,23 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Paciente;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PacienteController extends Controller
 {
     public function index()
     {
-        $pacientes = Paciente::with('user')->get();
+        $pacientes = Paciente::with('user')
+            ->when(Auth::user()->rol === 'usuario', function ($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->orderBy('nombre')
+            ->get();
+
         return view('modules.pacientes.index', compact('pacientes'));
     }
 
     public function create()
     {
+        abort_if(Auth::user()->rol === 'usuario', 403);
+
         $usuarios = User::where('rol', 'usuario')->get();
         return view('modules.pacientes.create', compact('usuarios'));
     }
 
     public function store(Request $request)
     {
+        abort_if(Auth::user()->rol === 'usuario', 403);
+
         $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'nombre' => 'required|string|max:255',
@@ -40,12 +51,20 @@ class PacienteController extends Controller
 
     public function edit(Paciente $paciente)
     {
+        if (Auth::user()->rol === 'usuario') {
+            abort_unless($paciente->user_id === Auth::id(), 403);
+        }
+
         $usuarios = User::where('rol', 'usuario')->get();
         return view('modules.pacientes.edit', compact('paciente', 'usuarios'));
     }
 
     public function update(Request $request, Paciente $paciente)
     {
+        if (Auth::user()->rol === 'usuario') {
+            abort_unless($paciente->user_id === Auth::id(), 403);
+        }
+
         $request->validate([
             'user_id' => 'nullable|exists:users,id',
             'nombre' => 'required|string|max:255',
@@ -64,6 +83,10 @@ class PacienteController extends Controller
 
     public function destroy(Paciente $paciente)
     {
+        if (Auth::user()->rol === 'usuario') {
+            abort_unless($paciente->user_id === Auth::id(), 403);
+        }
+
         $paciente->delete();
         return redirect()->route('pacientes.index')->with('success', 'Paciente eliminado exitosamente.');
     }

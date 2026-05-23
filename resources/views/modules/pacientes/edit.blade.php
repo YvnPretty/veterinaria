@@ -66,6 +66,20 @@ select.form-control-vet {
     background-position: right 1rem center;
     background-size: 16px 12px;
 }
+.owner-select-panel {
+    background-color: #f8f9fc;
+    border: 1px dashed #d1d3e2;
+    border-radius: 14px;
+    padding: 1rem;
+}
+.dark-mode .owner-select-panel {
+    background-color: #0f172a;
+    border-color: #475569;
+}
+.dark-mode select.form-control-vet option {
+    background-color: #0f172a;
+    color: #f8fafc;
+}
 </style>
 
 <div class="row mb-4 align-items-center" data-aos="fade-right">
@@ -123,7 +137,7 @@ select.form-control-vet {
         <h5 class="mb-4 text-primary font-weight-bold"><i class="fas fa-user mr-2"></i> Información del Propietario</h5>
         <div class="row">
             <div class="col-12 mb-4">
-                <div class="p-3 rounded-lg" style="background-color: #f8f9fc; border: 1px dashed #d1d3e2;">
+                <div class="owner-select-panel">
                     <label for="user_id" class="form-label">¿Dueño registrado en el sistema?</label>
                     <select class="form-control form-control-vet @error('user_id') is-invalid @enderror" id="user_id" name="user_id">
                         <option value="">-- No registrado / Manual --</option>

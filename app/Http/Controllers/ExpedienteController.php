@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Paciente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpedienteController extends Controller
 {
@@ -11,7 +12,11 @@ class ExpedienteController extends Controller
     {
         $search = $request->input('search');
 
-        $query = Paciente::with(['user', 'historiales.veterinario']);
+        $query = Paciente::with(['user', 'historiales.veterinario', 'citas']);
+
+        if (Auth::user()->rol === 'usuario') {
+            $query->where('user_id', Auth::id());
+        }
 
         if (!empty($search)) {
             $query->where(function($q) use ($search) {
@@ -30,7 +35,10 @@ class ExpedienteController extends Controller
         // Check if a specific patient ID was requested
         $selectedPaciente = null;
         if ($request->has('id')) {
-            $selectedPaciente = Paciente::with(['user', 'historiales.veterinario'])
+            $selectedPaciente = Paciente::with(['user', 'historiales.veterinario', 'citas'])
+                ->when(Auth::user()->rol === 'usuario', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
                 ->find($request->input('id'));
         } elseif ($pacientes->isNotEmpty()) {
             // Default to the first patient in the list
