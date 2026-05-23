@@ -64,6 +64,37 @@
             color: #94a3b8; 
         }
 
+        /* Sidebar Dark (Blue) Styling */
+        .sidebar-dark .nav-item .nav-link { 
+            color: rgba(255, 255, 255, 0.8) !important; 
+            padding: 0.85rem 1.25rem; 
+            border-radius: 12px; 
+            margin: 0.25rem 15px; 
+            width: auto; 
+            font-weight: 700; 
+            transition: all 0.2s ease;
+        }
+        .sidebar-dark .nav-item.active .nav-link { 
+            background-color: rgba(255, 255, 255, 0.2) !important; 
+            color: #ffffff !important; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar-dark .nav-item.active .nav-link i { color: #ffffff !important; }
+        .sidebar-dark .nav-item .nav-link:hover:not(.active) { 
+            background-color: rgba(255, 255, 255, 0.1); 
+            color: #ffffff !important; 
+            transform: translateX(3px);
+        }
+        .sidebar-dark .nav-item .nav-link i { font-size: 1rem; margin-right: 12px; transition: all 0.2s; }
+        .sidebar-dark .sidebar-heading { 
+            padding: 0.75rem 1.5rem 0.5rem; 
+            text-transform: uppercase; 
+            font-size: 0.7rem; 
+            letter-spacing: 0.1em; 
+            font-weight: 800; 
+            color: rgba(255, 255, 255, 0.6) !important; 
+        }
+
         /* Topbar Styling */
         .topbar { height: 4.5rem; border-bottom: 1px solid #e2e8f0 !important; }
         .topbar .nav-item .nav-link { height: 4.5rem; }
@@ -75,61 +106,83 @@
         .btn-vetcare { background-color: #7b61ff; color: white !important; border-radius: 12px; font-weight: 700; padding: 0.5rem 1.5rem; border: none; transition: all 0.2s ease; }
         .btn-vetcare:hover { background-color: #512da8; color: white !important; transform: translateY(-1px); }
 
-        /* Premium Off-Canvas Sidebar Overlay Styles */
-        #accordionSidebar {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            height: 100vh !important;
-            z-index: 1040;
-            width: 260px !important;
-            transform: translateX(-100%) !important;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            box-shadow: 5px 0 25px rgba(0,0,0,0.08) !important;
+        /* Premium Off-Canvas Sidebar Overlay Styles (Mobile and Tablet Only) */
+        @media (max-width: 991.98px) {
+            #accordionSidebar {
+                position: fixed !important;
+                top: 0;
+                left: 0;
+                height: 100vh !important;
+                z-index: 1040;
+                width: 260px !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                box-shadow: 5px 0 25px rgba(0,0,0,0.08) !important;
+            }
+
+            /* Ensure it remains fully expanded when open (toggled) */
+            #accordionSidebar.toggled {
+                width: 260px !important;
+            }
+            #accordionSidebar.toggled .sidebar-brand-text,
+            #accordionSidebar.toggled .nav-item .nav-link span,
+            #accordionSidebar.toggled .sidebar-heading {
+                display: block !important;
+                opacity: 1 !important;
+            }
+            #accordionSidebar.toggled .nav-item .nav-link i {
+                margin-right: 12px !important;
+            }
+            #accordionSidebar.toggled .sidebar-brand {
+                text-align: left !important;
+            }
+
+            /* Show sidebar when body is toggled */
+            body.sidebar-toggled #accordionSidebar {
+                transform: translateX(0) !important;
+            }
+
+            /* Adjust Content Wrapper to take full width */
+            #content-wrapper {
+                width: 100% !important;
+                padding-left: 0 !important;
+                margin-left: 0 !important;
+                transition: padding 0.3s ease;
+            }
+
+            /* Sidebar Backdrop styles */
+            .sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(15, 23, 42, 0.4); /* Modern slate/dark backdrop */
+                backdrop-filter: blur(4px); /* Sleek modern blur effect */
+                z-index: 1030;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
         }
 
-        /* Ensure it remains fully expanded when open (toggled) */
-        #accordionSidebar.toggled {
-            width: 260px !important;
-        }
-        #accordionSidebar.toggled .sidebar-brand-text,
-        #accordionSidebar.toggled .nav-item .nav-link span,
-        #accordionSidebar.toggled .sidebar-heading {
-            display: block !important;
-            opacity: 1 !important;
-        }
-        #accordionSidebar.toggled .nav-item .nav-link i {
-            margin-right: 12px !important;
-        }
-        #accordionSidebar.toggled .sidebar-brand {
-            text-align: left !important;
-        }
-
-        /* Show sidebar when body is toggled */
-        body.sidebar-toggled #accordionSidebar {
-            transform: translateX(0) !important;
-        }
-
-        /* Adjust Content Wrapper to take full width */
-        #content-wrapper {
-            width: 100% !important;
-            padding-left: 0 !important;
-            margin-left: 0 !important;
-            transition: padding 0.3s ease;
-        }
-
-        /* Sidebar Backdrop styles */
-        .sidebar-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: rgba(15, 23, 42, 0.4); /* Modern slate/dark backdrop */
-            backdrop-filter: blur(4px); /* Sleek modern blur effect */
-            z-index: 1030;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* Desktop Layout (Docked Sidebar) */
+        @media (min-width: 992px) {
+            #accordionSidebar {
+                position: sticky !important;
+                top: 0;
+                height: 100vh !important;
+                z-index: 1000;
+                width: 260px !important;
+                min-width: 260px;
+                transform: none !important;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.02) !important;
+            }
+            #content-wrapper {
+                width: calc(100% - 260px) !important;
+            }
+            .sidebar-backdrop {
+                display: none !important;
+            }
         }
 
         /* Custom VetCare Form Controls - Centralized for vertical alignment and styling */
@@ -311,51 +364,51 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
-        @if(!Request::is('expedientes*') && !Route::is('expedientes.*'))
         <!-- Sidebar Backdrop -->
         <div id="sidebarBackdrop" class="sidebar-backdrop" style="display: none;"></div>
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-white sidebar sidebar-light accordion border-right" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center mt-3 mb-3" href="{{ url('/') }}">
                 <div class="sidebar-brand-icon">
-                    <i class="fas fa-paw"></i>
+                    <img src="{{ asset('img/vetcare_logo.png') }}" alt="VetCare Logo" style="width: 45px; height: auto; border-radius: 8px;">
                 </div>
-                <div class="sidebar-brand-text mx-3 text-left leading-tight" style="line-height: 1.2;">
-                    <div style="font-size: 1.1rem; font-weight: 800;">Sistema Veterinario</div>
-                    <div style="font-size: 0.7rem; font-weight: normal; color: #858796;">
-                        @if(Auth::check())
-                            @if(Auth::user()->rol === 'administrador')
-                                Panel de Administración
-                            @elseif(Auth::user()->rol === 'usuario')
-                                Área de Cliente
-                            @else
-                                Clínica Veterinaria
-                            @endif
-                        @else
-                            Clínica Veterinaria
-                        @endif
-                    </div>
+                <div class="sidebar-brand-text mx-3 font-weight-bold" style="font-size: 1.1rem; letter-spacing: 0.05em; text-transform: uppercase;">
+                    VETCARE
                 </div>
             </a>
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ route('home') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+            <!-- Heading - CONSULTA -->
+            <div class="sidebar-heading mt-3">
+                CONSULTA
+            </div>
+
+            <!-- Nav Item - Diagnóstico -->
+            <li class="nav-item {{ Route::is('expedientes.consultas.diagnostico') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ (isset($selectedPaciente) && isset($selectedConsulta)) ? route('expedientes.consultas.diagnostico', [$selectedPaciente->id, $selectedConsulta->id]) : '#' }}">
+                    <i class="fas fa-fw fa-file-medical-alt"></i>
+                    <span>Diagnóstico</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Tratamiento -->
+            <li class="nav-item {{ Route::is('expedientes.consultas.tratamiento') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ (isset($selectedPaciente) && isset($selectedConsulta)) ? route('expedientes.consultas.tratamiento', [$selectedPaciente->id, $selectedConsulta->id]) : '#' }}">
+                    <i class="fas fa-fw fa-hand-holding-medical"></i>
+                    <span>Tratamiento</span>
+                </a>
             </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
+            <!-- Heading - ANTECEDENTES -->
             <div class="sidebar-heading">
-                Gestión
+                ANTECEDENTES
             </div>
 
             @if(Auth::check())
@@ -427,6 +480,45 @@
                     </li>
                 @endif
             @endif
+            <!-- Nav Item - Alergias -->
+            <li class="nav-item {{ Route::is('expedientes.antecedentes.alergias') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ isset($selectedPaciente) ? route('expedientes.antecedentes.alergias', $selectedPaciente->id) : '#' }}">
+                    <i class="fas fa-fw fa-allergies"></i>
+                    <span>Alergias</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Lesiones -->
+            <li class="nav-item {{ Route::is('expedientes.antecedentes.lesiones') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ isset($selectedPaciente) ? route('expedientes.antecedentes.lesiones', $selectedPaciente->id) : '#' }}">
+                    <i class="fas fa-fw fa-user-injured"></i>
+                    <span>Lesiones</span>
+                </a>
+            </li>
+
+            <!-- Nav Item - Patológicos -->
+            <li class="nav-item {{ Route::is('expedientes.antecedentes.patologicos') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ isset($selectedPaciente) ? route('expedientes.antecedentes.patologicos', $selectedPaciente->id) : '#' }}">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Patológicos</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading - HISTORIAL -->
+            <div class="sidebar-heading">
+                HISTORIAL
+            </div>
+
+            <!-- Nav Item - Alimentación -->
+            <li class="nav-item {{ Route::is('expedientes.historial.alimentacion') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ isset($selectedPaciente) ? route('expedientes.historial.alimentacion', $selectedPaciente->id) : '#' }}">
+                    <i class="fas fa-fw fa-utensils"></i>
+                    <span>Alimentación</span>
+                </a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -437,7 +529,6 @@
             </div>
         </ul>
         <!-- End of Sidebar -->
-        @endif
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -448,12 +539,10 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    @if(!Request::is('expedientes*') && !Route::is('expedientes.*'))
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
                         <i class="fa fa-bars" style="color: #7b61ff; font-size: 1.25rem;"></i>
                     </button>
-                    @endif
 
                     <!-- Topbar Nav Links -->
                     <ul class="navbar-nav mr-auto d-flex align-items-center" style="gap: 10px;">

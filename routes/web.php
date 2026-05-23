@@ -25,4 +25,24 @@ Route::middleware("auth")->group(function () {
     Route::resource('citas', \App\Http\Controllers\CitaController::class);
     Route::resource('historial', \App\Http\Controllers\HistorialController::class);
     Route::get('expedientes', [\App\Http\Controllers\ExpedienteController::class, 'index'])->name('expedientes.index');
+
+    // Rutas para Diagnóstico y Tratamiento de Consultas
+    Route::get('expedientes/{paciente_id}/consultas/{consulta_id}/diagnostico', [\App\Http\Controllers\ExpedienteController::class, 'diagnostico'])->name('expedientes.consultas.diagnostico');
+    Route::post('expedientes/{paciente_id}/consultas/{consulta_id}/diagnostico', [\App\Http\Controllers\ExpedienteController::class, 'guardarDiagnostico'])->name('expedientes.consultas.diagnostico.guardar');
+
+    Route::get('expedientes/{paciente_id}/consultas/{consulta_id}/tratamiento', [\App\Http\Controllers\ExpedienteController::class, 'tratamiento'])->name('expedientes.consultas.tratamiento');
+    Route::post('expedientes/{paciente_id}/consultas/{consulta_id}/tratamiento', [\App\Http\Controllers\ExpedienteController::class, 'guardarTratamiento'])->name('expedientes.consultas.tratamiento.guardar');
+
+    // Rutas para Antecedentes e Historial
+    Route::get('expedientes/{paciente_id}/antecedentes/alergias', [\App\Http\Controllers\ExpedienteController::class, 'alergias'])->name('expedientes.antecedentes.alergias');
+    Route::post('expedientes/{paciente_id}/antecedentes/alergias', [\App\Http\Controllers\ExpedienteController::class, 'guardarAlergias'])->name('expedientes.antecedentes.alergias.guardar');
+
+    Route::get('expedientes/{paciente_id}/antecedentes/lesiones', [\App\Http\Controllers\ExpedienteController::class, 'lesiones'])->name('expedientes.antecedentes.lesiones');
+    Route::post('expedientes/{paciente_id}/antecedentes/lesiones', [\App\Http\Controllers\ExpedienteController::class, 'guardarLesiones'])->name('expedientes.antecedentes.lesiones.guardar');
+
+    Route::get('expedientes/{paciente_id}/antecedentes/patologicos', [\App\Http\Controllers\ExpedienteController::class, 'patologicos'])->name('expedientes.antecedentes.patologicos');
+    Route::post('expedientes/{paciente_id}/antecedentes/patologicos', [\App\Http\Controllers\ExpedienteController::class, 'guardarPatologicos'])->name('expedientes.antecedentes.patologicos.guardar');
+
+    Route::get('expedientes/{paciente_id}/historial/alimentacion', [\App\Http\Controllers\ExpedienteController::class, 'alimentacion'])->name('expedientes.historial.alimentacion');
+    Route::post('expedientes/{paciente_id}/historial/alimentacion', [\App\Http\Controllers\ExpedienteController::class, 'guardarAlimentacion'])->name('expedientes.historial.alimentacion.guardar');
 });

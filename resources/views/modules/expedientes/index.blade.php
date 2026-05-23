@@ -419,7 +419,7 @@
                 </div>
                 
                 @if($selectedPaciente->observaciones)
-                <div class="mt-4 p-3 bg-light rounded-lg" style="border-left: 4px solid #7b61ff; border-radius: 12px;">
+                <div class="mt-3 p-3 bg-light rounded-lg" style="border-left: 4px solid #7b61ff; border-radius: 12px;">
                     <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;"><i class="fas fa-info-circle mr-1 text-primary"></i> Observaciones Generales:</h6>
                     <p class="mb-0 text-muted small" style="line-height: 1.4; font-weight: 500;">{{ $selectedPaciente->observaciones }}</p>
                 </div>
@@ -487,6 +487,56 @@
                         </a>
                     </div>
                 @endif
+                <!-- Antecedentes y Alimentación Grid -->
+                <div class="mt-4 pt-3 border-top">
+                    <h6 class="font-weight-bold mb-3" style="color: #1f2d3d; font-size: 0.9rem;"><i class="fas fa-notes-medical mr-1 text-primary"></i> Resumen de Antecedentes e Historial:</h6>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 bg-light h-100" style="border-radius: 12px; border: 1px solid #eef2f6; min-height: 100px;">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="font-weight-bold text-dark small"><i class="fas fa-allergies text-warning mr-1"></i> Alergias</span>
+                                    <a href="{{ route('expedientes.antecedentes.alergias', $selectedPaciente->id) }}" class="btn btn-sm btn-link text-primary p-0"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <p class="mb-0 text-muted small" style="line-height: 1.3;">
+                                    {!! $selectedPaciente->antecedentes_alergias ? Str::limit(strip_tags($selectedPaciente->antecedentes_alergias), 40) : '<em>Sin registros</em>' !!}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 bg-light h-100" style="border-radius: 12px; border: 1px solid #eef2f6; min-height: 100px;">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="font-weight-bold text-dark small"><i class="fas fa-user-injured text-danger mr-1"></i> Lesiones</span>
+                                    <a href="{{ route('expedientes.antecedentes.lesiones', $selectedPaciente->id) }}" class="btn btn-sm btn-link text-primary p-0"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <p class="mb-0 text-muted small" style="line-height: 1.3;">
+                                    {!! $selectedPaciente->antecedentes_lesiones ? Str::limit(strip_tags($selectedPaciente->antecedentes_lesiones), 40) : '<em>Sin registros</em>' !!}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 bg-light h-100" style="border-radius: 12px; border: 1px solid #eef2f6; min-height: 100px;">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="font-weight-bold text-dark small"><i class="fas fa-notes-medical text-info mr-1"></i> Patológicos</span>
+                                    <a href="{{ route('expedientes.antecedentes.patologicos', $selectedPaciente->id) }}" class="btn btn-sm btn-link text-primary p-0"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <p class="mb-0 text-muted small" style="line-height: 1.3;">
+                                    {!! $selectedPaciente->antecedentes_patologicos ? Str::limit(strip_tags($selectedPaciente->antecedentes_patologicos), 40) : '<em>Sin registros</em>' !!}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 bg-light h-100" style="border-radius: 12px; border: 1px solid #eef2f6; min-height: 100px;">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <span class="font-weight-bold text-dark small"><i class="fas fa-utensils text-success mr-1"></i> Alimentación</span>
+                                    <a href="{{ route('expedientes.historial.alimentacion', $selectedPaciente->id) }}" class="btn btn-sm btn-link text-primary p-0"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <p class="mb-0 text-muted small" style="line-height: 1.3;">
+                                    {!! $selectedPaciente->historial_alimentacion ? Str::limit(strip_tags($selectedPaciente->historial_alimentacion), 40) : '<em>Sin registros</em>' !!}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <!-- Clinical History Timeline dossier -->
@@ -517,9 +567,12 @@
                                             <div class="clinical-icon" title="Diagnóstico">
                                                 <i class="fas fa-notes-medical"></i>
                                             </div>
-                                            <div>
-                                                <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;">Diagnóstico</h6>
-                                                <p class="clinical-text mb-0">{{ $registro->diagnostico }}</p>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;">Diagnóstico</h6>
+                                                    <a href="{{ route('expedientes.consultas.diagnostico', [$selectedPaciente->id, $registro->id]) }}" class="btn btn-sm btn-link text-primary p-0 font-weight-bold" style="font-size: 0.75rem;"><i class="fas fa-edit mr-1"></i>Editar</a>
+                                                </div>
+                                                <p class="clinical-text mb-0">{!! $registro->diagnostico !!}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -529,9 +582,12 @@
                                             <div class="clinical-icon" title="Tratamiento">
                                                 <i class="fas fa-band-aid"></i>
                                             </div>
-                                            <div>
-                                                <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;">Tratamiento / Procedimiento</h6>
-                                                <p class="clinical-text mb-0">{{ $registro->tratamiento }}</p>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <h6 class="font-weight-bold mb-1" style="color: #1f2d3d; font-size: 0.85rem;">Tratamiento / Procedimiento</h6>
+                                                    <a href="{{ route('expedientes.consultas.tratamiento', [$selectedPaciente->id, $registro->id]) }}" class="btn btn-sm btn-link text-primary p-0 font-weight-bold" style="font-size: 0.75rem;"><i class="fas fa-edit mr-1"></i>Editar</a>
+                                                </div>
+                                                <p class="clinical-text mb-0">{!! $registro->tratamiento !!}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -540,7 +596,7 @@
                                 @if($registro->medicamentos)
                                 <div class="badge-medicamentos">
                                     <i class="fas fa-pills"></i>
-                                    <span><strong>Receta:</strong> {{ $registro->medicamentos }}</span>
+                                    <span><strong>Receta:</strong> {!! $registro->medicamentos !!}</span>
                                 </div>
                                 @endif
                             </div>
