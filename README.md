@@ -68,6 +68,18 @@ Sigue estos pasos para levantar el entorno de desarrollo en tu máquina local:
    ```
    El proyecto estará disponible en `http://localhost:8000`.
 
+## Arquitectura de Base de Datos
+
+### Diagrama de Base de Datos
+![Diagrama de Base de Datos](public/img/db_diagram.png)
+
+### Reglas de Negocio
+1. **Usuarios y Roles:** El sistema maneja diferentes tipos de usuarios (dueños y veterinarios), cada uno con información específica (ej. cédula profesional para veterinarios).
+2. **Registro de Pacientes:** Un dueño puede tener múltiples mascotas asociadas a su perfil.
+3. **Historial Clínico:** El sistema mantiene un registro detallado de las mascotas, dividiendo sus antecedentes en alergias, lesiones, patologías y alimentación.
+4. **Gestión de Consultas:** Un veterinario atiende a una mascota y genera un registro de la consulta con diagnóstico y tratamiento.
+5. **Configuración Dinámica:** La plataforma permite gestionar la información general de la clínica de forma dinámica.
+
 ## Autor
 
 Desarrollado y mantenido por **YvnPretty**.

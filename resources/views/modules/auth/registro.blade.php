@@ -48,7 +48,6 @@
                                             <option value="" disabled selected>Selecciona un rol...</option>
                                             <option value="usuario">Usuario</option>
                                             <option value="veterinario">Veterinario</option>
-                                            <option value="administrador">Administrador</option>
                                         </select>
                                     </div>
                                     <button class="btn btn-primary btn-user btn-block">
